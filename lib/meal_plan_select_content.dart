@@ -76,7 +76,9 @@ class _MealPlanListItemState extends State<MealPlanListItem> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return MealPlanViewPage();
+              return MealPlanViewPage(
+                meal_plan_name: widget.title,
+              );
             },
           ),
         );
