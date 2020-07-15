@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'top_bar.dart';
+import 'meal_plan_view_page_content.dart';
 
 class MealPlanSelectPage extends StatefulWidget {
   @override
@@ -69,20 +70,32 @@ class MealPlanListItem extends StatefulWidget {
 class _MealPlanListItemState extends State<MealPlanListItem> {
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(widget.title),
-        subtitle: Text(widget.subtitle),
-        isThreeLine: true,
-        trailing: Column(
-          children: <Widget>[
-            RaisedButton(
-              child: Text(
-                "Select",
-                style: TextStyle(color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return MealPlanViewPage();
+            },
+          ),
+        );
+      },
+      child: Card(
+        child: ListTile(
+          title: Text(widget.title),
+          subtitle: Text(widget.subtitle),
+          isThreeLine: true,
+          trailing: Column(
+            children: <Widget>[
+              RaisedButton(
+                child: Text(
+                  "Select",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
