@@ -72,11 +72,19 @@ class _RecipePageState extends State<RecipePage> {
 class IngredientsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      child: Container(
-        color: Colors.red,
-      ),
+    return ListView(
+      padding: EdgeInsets.all(10),
+      children: <Widget>[
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+        IngredientListTile(),
+      ],
     );
   }
 }
@@ -84,10 +92,56 @@ class IngredientsWidget extends StatelessWidget {
 class InstructionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-      child: Container(
-        color: Colors.blue,
+    return ListView(
+      padding: EdgeInsets.all(10),
+      children: <Widget>[
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+        InstructionsListTile(),
+      ],
+    );
+  }
+}
+
+class IngredientListTile extends StatelessWidget {
+  const IngredientListTile({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text("Ingredient"),
+        subtitle: Text("Amount"),
+      ),
+    );
+  }
+}
+
+class InstructionsListTile extends StatelessWidget {
+  const InstructionsListTile({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: ListTile(
+          title: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+            child: Text("Step 1"),
+          ),
+          subtitle: Text(
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+        ),
       ),
     );
   }
