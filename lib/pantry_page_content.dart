@@ -2,6 +2,7 @@ import 'meal_card.dart';
 import 'top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'add_ingredient_page_content.dart';
 
 class PantryPageContent extends StatefulWidget {
   const PantryPageContent({
@@ -85,7 +86,16 @@ class _PantryPageContentState extends State<PantryPageContent> {
                 ),
                 IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return AddIngredientPage();
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

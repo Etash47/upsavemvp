@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'top_bar.dart';
 import 'meal_plan_view_page_content.dart';
 
+int selectedPlan = 0;
+
 class MealPlanSelectPage extends StatefulWidget {
   @override
   _MealPlanSelectPageState createState() => _MealPlanSelectPageState();
@@ -33,20 +35,32 @@ class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
                   title: "Tofutastic",
                   subtitle:
                       "Recipes from Asia, Africa, Europe, and the Americas",
+                  planID: 0,
+                  selected: (0 == selectedPlan),
+                  parent: this,
                 ),
                 MealPlanListItem(
                   title: "Baller Beef",
                   subtitle: "Beef Recipes for protein and deliciousness",
+                  planID: 1,
+                  selected: (1 == selectedPlan),
+                  parent: this,
                 ),
                 MealPlanListItem(
                   title: "Hot Chicks",
                   subtitle:
                       "Classic and cost-effective chicken recipes: an UpSave Classic",
+                  planID: 2,
+                  selected: (2 == selectedPlan),
+                  parent: this,
                 ),
                 MealPlanListItem(
                   title: "Veggie Turbo",
                   subtitle:
                       "A Vegan meal plan that works with gluten-free and other allergies.",
+                  planID: 3,
+                  selected: (3 == selectedPlan),
+                  parent: this,
                 ),
               ],
             ),
@@ -60,8 +74,12 @@ class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
 class MealPlanListItem extends StatefulWidget {
   final String title;
   final String subtitle;
+  final int planID;
+  final bool selected;
+  final _MealPlanSelectPageState parent;
 
-  MealPlanListItem({this.title, this.subtitle});
+  MealPlanListItem(
+      {this.title, this.subtitle, this.planID, this.selected, this.parent});
 
   @override
   _MealPlanListItemState createState() => _MealPlanListItemState();
@@ -92,9 +110,16 @@ class _MealPlanListItemState extends State<MealPlanListItem> {
             children: <Widget>[
               RaisedButton(
                 child: Text(
-                  "Select",
+                  widget.selected ? "Selected" : "Select",
                   style: TextStyle(color: Colors.white),
                 ),
+                onPressed: () {
+                  widget.parent.setState(() {
+                    selectedPlan = widget.planID;
+                  });
+                },
+                color:
+                    widget.selected ? green_accent_color : Colors.grey.shade400,
               ),
             ],
           ),

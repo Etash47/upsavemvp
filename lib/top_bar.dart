@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+const green_accent_color = Color(0xFF20CEBA);
+
 class TopBar extends StatelessWidget {
   final String header;
   final String subheader;
