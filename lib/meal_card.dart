@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'recipe_page_content.dart';
 
 class MealCard extends StatelessWidget {
-  const MealCard({
-    Key key,
-  }) : super(key: key);
+  final String meal_name;
+
+  MealCard({this.meal_name});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class MealCard extends StatelessWidget {
               ),
               SizedBox(height: 15.0),
               Text(
-                "Meal",
+                meal_name,
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 5.0),
