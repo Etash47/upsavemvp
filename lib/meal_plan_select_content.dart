@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'top_bar.dart';
 import 'meal_plan_view_page_content.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+final _firestore = Firestore.instance;
 
 int selectedPlan = 0;
+
+List<dynamic> meal_plans = [];
 
 class MealPlanSelectPage extends StatefulWidget {
   @override
@@ -10,6 +15,31 @@ class MealPlanSelectPage extends StatefulWidget {
 }
 
 class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
+  void getMealPlans() async {
+    meal_plans = [];
+
+    final fb_meal_plans =
+        await _firestore.collection('meal_plans').getDocuments();
+
+    for (var mp in fb_meal_plans.documents) {
+      var map = {
+        'id': mp.reference.documentID,
+        'name': mp.data['name'],
+        'description': mp.data['description'],
+      };
+
+      setState(() {
+        meal_plans.add(map);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMealPlans();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,44 +60,34 @@ class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
           Expanded(
             child: ListView(
               padding: EdgeInsets.all(10),
-              children: <Widget>[
-                MealPlanListItem(
-                  title: "Tofutastic",
-                  subtitle:
-                      "Recipes from Asia, Africa, Europe, and the Americas",
-                  planID: 0,
-                  selected: (0 == selectedPlan),
-                  parent: this,
-                ),
-                MealPlanListItem(
-                  title: "Baller Beef",
-                  subtitle: "Beef Recipes for protein and deliciousness",
-                  planID: 1,
-                  selected: (1 == selectedPlan),
-                  parent: this,
-                ),
-                MealPlanListItem(
-                  title: "Hot Chicks",
-                  subtitle:
-                      "Classic and cost-effective chicken recipes: an UpSave Classic",
-                  planID: 2,
-                  selected: (2 == selectedPlan),
-                  parent: this,
-                ),
-                MealPlanListItem(
-                  title: "Veggie Turbo",
-                  subtitle:
-                      "A Vegan meal plan that works with gluten-free and other allergies.",
-                  planID: 3,
-                  selected: (3 == selectedPlan),
-                  parent: this,
-                ),
-              ],
+              children: generateMealCards(),
             ),
           ),
         ],
       ),
     );
+  }
+
+  List generateMealCards() {
+    List<Widget> list = new List<Widget>();
+
+    int i = 0;
+
+    for (var mp in meal_plans) {
+      i += 1;
+
+      var temp = MealPlanListItem(
+        title: mp['name'],
+        subtitle: mp['description'],
+        planID: i,
+        selected: (i == selectedPlan),
+        parent: this,
+      );
+
+      list.add(temp);
+    }
+
+    return list;
   }
 }
 

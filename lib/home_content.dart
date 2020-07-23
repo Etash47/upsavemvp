@@ -10,6 +10,8 @@ final _firestore = Firestore.instance;
 
 List<Recipe> meals = [];
 
+String meal_plan_name = 'Pesca Passion';
+
 class HomeContent extends StatefulWidget {
   const HomeContent({
     Key key,
@@ -25,7 +27,7 @@ class _HomeContentState extends State<HomeContent> {
 
     final selected_meal_plan = await _firestore
         .collection('meal_plans')
-        .where('name', isEqualTo: 'Pesca Passion')
+        .where('name', isEqualTo: meal_plan_name)
         .getDocuments();
 
     final selected_recipe_ids =
@@ -95,7 +97,7 @@ class _HomeContentState extends State<HomeContent> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'TofuTastic',
+                          meal_plan_name,
                           style: TextStyle(fontSize: 16),
                         ),
                         IconButton(
