@@ -1,17 +1,27 @@
 import 'package:upsavemvp/meal_plan_select_content.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'meal_card.dart';
 import 'top_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+final _firestore = Firestore.instance;
 
 class HomeContent extends StatelessWidget {
   const HomeContent({
     Key key,
   }) : super(key: key);
 
+  void getMeals() async {
+    final meals = await _firestore.collection('recipes').getDocuments();
+    for (var meal in meals.documents) {
+      print(meal.data);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    getMeals();
     return Column(
       children: <Widget>[
         //Top App Bar

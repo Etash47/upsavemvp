@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "95758205973",
+    "firebase_url": "https://recipe-ingredient-database.firebaseio.com",
+    "project_id": "recipe-ingredient-database",
+    "storage_bucket": "recipe-ingredient-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95758205973:android:d072c2ee61c3c339363a1c",
+        "android_client_info": {
+          "package_name": "co.upsave.upsavemvp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95758205973-ausa01c0ia6du0hsl99n1o30hm36eh3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9AJyL5dZoIfWkQot5O3hb88GFCzLZIxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95758205973-ausa01c0ia6du0hsl99n1o30hm36eh3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
