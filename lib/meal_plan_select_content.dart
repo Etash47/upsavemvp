@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:upsavemvp/home_content.dart';
 import 'top_bar.dart';
 import 'meal_plan_view_page_content.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'home_content.dart';
 
 final _firestore = Firestore.instance;
 
@@ -74,8 +76,6 @@ class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
     int i = 0;
 
     for (var mp in meal_plans) {
-      i += 1;
-
       var temp = MealPlanListItem(
         title: mp['name'],
         subtitle: mp['description'],
@@ -85,10 +85,18 @@ class _MealPlanSelectPageState extends State<MealPlanSelectPage> {
       );
 
       list.add(temp);
+
+      i += 1;
     }
 
     return list;
   }
+}
+
+void changeMealPlanGlobally(context) {
+  var new_plan = meal_plans[selectedPlan]['name'];
+  MealPlanInheritance.of(context).changeMealPlan(new_plan);
+  print("Changed to $new_plan");
 }
 
 class MealPlanListItem extends StatefulWidget {
@@ -115,7 +123,7 @@ class _MealPlanListItemState extends State<MealPlanListItem> {
           MaterialPageRoute(
             builder: (context) {
               return MealPlanViewPage(
-                meal_plan_name: widget.title,
+                mealPlanName: widget.title,
               );
             },
           ),
@@ -136,6 +144,9 @@ class _MealPlanListItemState extends State<MealPlanListItem> {
                 onPressed: () {
                   widget.parent.setState(() {
                     selectedPlan = widget.planID;
+                    setState(() {
+                      changeMealPlanGlobally(context);
+                    });
                   });
                 },
                 color:

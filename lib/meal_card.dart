@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'recipe_page_content.dart';
+import 'recipe_class.dart';
 
 class MealCard extends StatelessWidget {
-  final String meal_name;
+  final Recipe recipeObject;
 
-  MealCard({this.meal_name});
+  MealCard({this.recipeObject});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class MealCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return RecipePage(recipe_name: "Meal Name");
+            return RecipePage(recipeObject: recipeObject);
           }));
         },
         child: Padding(
@@ -37,7 +38,7 @@ class MealCard extends StatelessWidget {
               ),
               SizedBox(height: 15.0),
               Text(
-                meal_name,
+                recipeObject.recipe_name,
                 style: TextStyle(fontSize: 16),
               ),
               SizedBox(height: 5.0),

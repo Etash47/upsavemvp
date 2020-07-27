@@ -10,7 +10,30 @@ final _firestore = Firestore.instance;
 
 List<Recipe> meals = [];
 
-String meal_plan_name = 'Pesca Passion';
+//String meal_plan_name = 'Pesca Passion';
+
+class MealPlanInheritance extends InheritedWidget {
+  // ignore: non_constant_identifier_names
+  String meal_plan_name_ih = 'Pesca Passion';
+
+  MealPlanInheritance({
+    Key key,
+    @required Widget child,
+  }) : super(key: key, child: child);
+
+  static MealPlanInheritance of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MealPlanInheritance>();
+  }
+
+  void changeMealPlan(String newPlan) {
+    meal_plan_name_ih = newPlan;
+  }
+
+  @override
+  bool updateShouldNotify(MealPlanInheritance old) {
+    return meal_plan_name_ih != old.meal_plan_name_ih;
+  }
+}
 
 class HomeContent extends StatefulWidget {
   const HomeContent({
@@ -27,7 +50,8 @@ class _HomeContentState extends State<HomeContent> {
 
     final selected_meal_plan = await _firestore
         .collection('meal_plans')
-        .where('name', isEqualTo: meal_plan_name)
+        .where('name',
+            isEqualTo: MealPlanInheritance.of(context).meal_plan_name_ih)
         .getDocuments();
 
     final selected_recipe_ids =
@@ -63,7 +87,9 @@ class _HomeContentState extends State<HomeContent> {
   @override
   void initState() {
     super.initState();
-    getMeals();
+    Future.delayed(Duration.zero, () {
+      this.getMeals();
+    });
   }
 
   @override
@@ -97,7 +123,7 @@ class _HomeContentState extends State<HomeContent> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          meal_plan_name,
+                          MealPlanInheritance.of(context).meal_plan_name_ih,
                           style: TextStyle(fontSize: 16),
                         ),
                         IconButton(
@@ -129,8 +155,7 @@ class _HomeContentState extends State<HomeContent> {
                       crossAxisCount: 2,
                       padding: EdgeInsets.all(8),
                       children: <Widget>[
-                        for (var meal in meals)
-                          MealCard(meal_name: meal.recipe_name)
+                        for (var meal in meals) MealCard(recipeObject: meal)
                       ],
                     ),
                   ),

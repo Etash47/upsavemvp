@@ -1,22 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'top_bar.dart';
+import 'recipe_class.dart';
 
 class RecipePage extends StatefulWidget {
-  final String recipe_name;
+  final Recipe recipeObject;
 
-  RecipePage({this.recipe_name});
+  RecipePage({this.recipeObject});
 
   @override
   _RecipePageState createState() => _RecipePageState();
 }
 
 class _RecipePageState extends State<RecipePage> {
-  List<Widget> _myAnimatedWidgets = [
-    IngredientsWidget(),
-    InstructionsWidget(),
-  ];
-
   int selectorValue = 0;
 
   @override
@@ -25,7 +21,7 @@ class _RecipePageState extends State<RecipePage> {
       body: Column(
         children: <Widget>[
           TopBar(
-            header: widget.recipe_name,
+            header: widget.recipeObject.recipe_name,
             subheader: "Recipe",
             subheader_content: null,
             back_button: true,
@@ -53,7 +49,10 @@ class _RecipePageState extends State<RecipePage> {
           ),
           Expanded(
             child: AnimatedSwitcher(
-              child: _myAnimatedWidgets[selectorValue],
+              child: [
+                IngredientsWidget(widget.recipeObject),
+                InstructionsWidget(widget.recipeObject),
+              ][selectorValue],
               duration: Duration(milliseconds: 500),
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return ScaleTransition(
@@ -70,64 +69,76 @@ class _RecipePageState extends State<RecipePage> {
 }
 
 class IngredientsWidget extends StatelessWidget {
+  final Recipe recipeObject;
+
+  IngredientsWidget(this.recipeObject);
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.all(10),
       children: <Widget>[
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
-        IngredientListTile(),
+        for (var ingredient in recipeObject.ingredients)
+          IngredientListTile(ingredient)
       ],
     );
   }
 }
 
 class InstructionsWidget extends StatelessWidget {
+  final Recipe recipeObject;
+  InstructionsWidget(this.recipeObject);
+
   @override
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.all(10),
-      children: <Widget>[
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-        InstructionsListTile(),
-      ],
+      children: getInstructionTiles(recipeObject),
     );
   }
 }
 
+List<Widget> getInstructionTiles(Recipe recipeObject) {
+  List<Widget> children = [];
+
+  int i = 0;
+  for (var instruction in recipeObject.instructions) {
+    children.add(InstructionsListTile(instruction.toString(), i));
+    i += 1;
+  }
+
+  return children;
+}
+
 class IngredientListTile extends StatelessWidget {
-  const IngredientListTile({
-    Key key,
-  }) : super(key: key);
+  final dynamic ingredient;
+  String ingredientName;
+  double ingredientAmount;
+  String ingredientUnit;
+
+  IngredientListTile(this.ingredient) {
+    var ingredientMap = ingredient as Map<String, dynamic>;
+    ingredientName = ingredientMap['ingredient'];
+    ingredientAmount = double.parse(ingredientMap['amount'].toString());
+    ingredientUnit = ingredientMap['units'];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text("Ingredient"),
-        subtitle: Text("Amount"),
+        title: Text(ingredientName),
+        subtitle: Text(ingredientAmount.toString() + " " + ingredientUnit),
       ),
     );
   }
 }
 
 class InstructionsListTile extends StatelessWidget {
-  const InstructionsListTile({
-    Key key,
-  }) : super(key: key);
+  final String instruction;
+  final int instructionNumber;
+
+  InstructionsListTile(this.instruction, this.instructionNumber);
 
   @override
   Widget build(BuildContext context) {
@@ -137,10 +148,9 @@ class InstructionsListTile extends StatelessWidget {
         child: ListTile(
           title: Padding(
             padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-            child: Text("Step 1"),
+            child: Text("Step $instructionNumber"),
           ),
-          subtitle: Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."),
+          subtitle: Text(instruction),
         ),
       ),
     );
